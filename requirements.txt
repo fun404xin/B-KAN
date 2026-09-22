@@ -1,0 +1,13 @@
+# Core training and numerical dependencies
+torch>=1.10.0
+numpy
+pandas
+scipy
+scikit-learn
+gpytorch
+tqdm
+matplotlib
+seaborn
+svgwrite
+Pillow
+ptflops
