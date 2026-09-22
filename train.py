@@ -15,7 +15,6 @@ from models.transformer import Transformer
 from models.gp import GaussianProcess
 from models.mc_drop_transformer import MCDropoutTransformer
 from utils.loss import elbo_loss
-from utils.visualization import plot_rul_prediction, plot_ecr_curve, plot_feature_contribution
 from utils.metrics import get_all_metrics
 import argparse
 import matplotlib.pyplot as plt
@@ -63,11 +62,9 @@ def evaluate_model_efficiency(model, sample_input, device, num_mc=100):
         try:
             from ptflops import get_model_complexity_info
             model.eval()
-            # ptflops 需要传入不含 batch_size 的 shape tuple
+            
             input_shape = tuple(single_input.shape[1:])
             
-            # ptflops 统计的是 MACs (Multiply-Accumulate Operations)
-            # 标准转换规则：1 MAC ≈ 2 FLOPs
             macs, _ = get_model_complexity_info(
                 model, input_shape, 
                 as_strings=False, 
@@ -82,9 +79,7 @@ def evaluate_model_efficiency(model, sample_input, device, num_mc=100):
             print(f"[Warning] FLOPs calculation skipped (Please `pip install fvcore` or `ptflops`): {e}")
 
    
-    model.train()  # 激活概率模型的 MC Sampling 模式
-    
-    # GPU 预热
+    model.train()  
     with torch.no_grad():
         for _ in range(10):
             _ = model(single_input)
@@ -115,7 +110,7 @@ def evaluate_model_efficiency(model, sample_input, device, num_mc=100):
 def plot_uncertainty_decomposition(aleatoric, epistemic, save_path):
    
     
-    plt.figure(figsize=(8, 5.5))  # 微调比例更接近原图
+    plt.figure(figsize=(8, 5.5))  
     x = epistemic.flatten()
     y = aleatoric.flatten()
    
@@ -177,7 +172,7 @@ def validate_model(model, loader, device, kl_weight, criterion=None):
             if isinstance(output, tuple):
                 mu, logvar, kl = output
 
-                # 与训练阶段保持一致
+             
                 current_kl_weight = kl_weight / num_batches
 
                 loss, _ = elbo_loss(
@@ -243,7 +238,7 @@ def evaluate_model(model, loader, device):
         zeros = np.zeros_like(p)
         return p, zeros, np.concatenate(truths), zeros, zeros
 def evaluate_single_bearing(model, dataset, device):
-    loader = DataLoader(dataset, batch_size=64, shuffle=False)
+    loader = DataLoader(dataset, batch_size=32, shuffle=False)
     dummy_x, _ = next(iter(loader))
     dummy_x = dummy_x.to(device)
     model.eval()
@@ -396,7 +391,7 @@ def main():
     DATA_DIR = './data/XJTU-SY'
     ALL_CONDITIONS = ['35Hz12kN']
     TRAIN_IDS = [1]
-    VAL_IDS = [1] 
+    VAL_IDS = [2] 
     selected_features = None 
 
     print("\n" + "="*50)
@@ -407,7 +402,7 @@ def main():
     
     try:
         train_loader, val_loader, scaler = get_xjtu_dataloader(
-            DATA_DIR, ALL_CONDITIONS, TRAIN_IDS, VAL_IDS, batch_size=1, feature_select=selected_features, fpt_dict=my_fpt_dict
+            DATA_DIR, ALL_CONDITIONS, TRAIN_IDS, VAL_IDS, batch_size=32, feature_select=selected_features, fpt_dict=my_fpt_dict
         )
         feature_names = train_loader.dataset.feature_keys
         input_dim = len(feature_names)
@@ -550,7 +545,7 @@ def main():
             try:
                 dataset = XJTU_SY_Dataset(DATA_DIR, cond, [bid], scaler=scaler, is_train=False, feature_select=selected_features)
                 total_life_actual = len(dataset)
-                data_loader = DataLoader(dataset, batch_size=200, shuffle=False)
+                data_loader = DataLoader(dataset, batch_size=32, shuffle=False)
                 if len(dataset) == 0:
                     print(" [Skipped: No Data Found]")
                     continue
@@ -563,12 +558,12 @@ def main():
                 
                 res = {
                     "Condition": cond, "Bearing": bid, "Role": role,
-                    "RMSE": round(metrics['RMSE'], 4), "MAE": round(metrics['MAE'], 4), "R2": round(metrics['R2'], 4)
+                    "RMSE": round(metrics['RMSE'], 4), "R2": round(metrics['R2'], 4)
                 }
                 if 'NLL' in metrics:
-                    res["NLL"], res["PICP"], res["MPIW"] = round(metrics['NLL'], 4), round(metrics['PICP'], 4), round(metrics['MPIW'], 4)
+                    res["CRPS"], res["PICP"], res["MPIW"] = round(metrics['CRPS'], 4), round(metrics['PICP'], 4), round(metrics['MPIW'], 4)
                 else:
-                    res["NLL"], res["PICP"], res["MPIW"] = "-", "-", "-"
+                    res["CRPS"], res["PICP"], res["MPIW"] = "-", "-", "-"
                 results_list.append(res)
                 
                 plot_rulname = os.path.join(image_save_dir, f"rul_{run_id}_{cond}_b{bid}.jpg")
@@ -600,12 +595,8 @@ def main():
                 print(" -> Saved result_interpretation.jpg")
                 
                 log_msg = f" Done. RMSE={metrics['RMSE']:.4f}"
-                if 'NLL' in metrics: log_msg += f", NLL={metrics['NLL']:.4f}"
-                print(log_msg)
+          
                 
-            except Exception as e:
-                print(f" [Error: {e}]")
-                results_list.append({"Condition": cond, "Bearing": bid, "Role": role, "RMSE": "Error", "NLL": str(e)})
     
     if len(results_list) > 0:
         df = pd.DataFrame(results_list)
