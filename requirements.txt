@@ -1,13 +1,23 @@
-# Core training and numerical dependencies
-torch>=1.10.0
-numpy
-pandas
-scipy
-scikit-learn
-gpytorch
-tqdm
-matplotlib
-seaborn
-svgwrite
-Pillow
-ptflops
+# Recommended environment: Python 3.10
+# Install the PyTorch build suitable for your CPU/CUDA environment if needed:
+# https://pytorch.org/get-started/locally/
+
+# Deep learning and probabilistic modeling
+torch==2.1.2
+gpytorch==1.13
+
+# Numerical computing and data handling
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.1
+scikit-learn==1.5.1
+
+# Visualization and utility packages
+matplotlib==3.8.4
+seaborn==0.13.2
+tqdm==4.66.4
+Pillow==10.4.0
+svgwrite==1.4.3
+
+# Model complexity / FLOPs estimation
+ptflops==0.7.3
