@@ -1,4 +1,42 @@
 # B-KAN
+1. Repository Structure
+B-KAN/
+├── data/
+│   └── XJTU-SY/
+│   └──FEMTO-ST/
+├── models/
+│   ├── b_kan.py
+│   ├── bayesianlstm.py
+│   ├── lstm.py
+│   ├── kan.py
+│   ├── transformer.py
+│   ├── gp.py
+│   └── mc_drop_transformer.py
+│   └── mwnue.py
+├── utils/
+│   ├── loss.py
+│   ├── metrics.py
+│   └── ...
+│
+├── train.py
+├── requirements.txt
+└── README.md
+The main training and evaluation entry point is:
+python train.py
+2. Environment
+2.1 Recommended Environment
+The code is implemented with Python and PyTorch.
+A virtual environment is recommended:
+python -m venv .venv
+Linux / macOS
+source .venv/bin/activate
+Windows
+.venv\Scripts\activate
+Then upgrade pip:
+3. Install Dependencies
+Install the required Python packages using:
+pip install -r requirements.txt
+python -m pip install --upgrade pip
 Dataset Availability
 The experiments in this study were conducted using the publicly available XJTU-SY and FEMTO-ST (PRONOSTIA / PHM 2012) bearing datasets. Due to the large size of the raw data files, these datasets are not included in this repository. Users can download them from the following sources.
 1. XJTU-SY Bearing Dataset
