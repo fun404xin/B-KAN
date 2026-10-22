@@ -19,10 +19,14 @@ Then upgrade pip:
 
 python -m pip install --upgrade pip
 
-3. Install Dependencies
+2. Install Dependencies
+3. 
 Install the required Python packages using:
+
 pip install -r requirements.txt
+
 python -m pip install --upgrade pip
+
 Dataset Availability
 The experiments in this study were conducted using the publicly available XJTU-SY and FEMTO-ST (PRONOSTIA / PHM 2012) bearing datasets. Due to the large size of the raw data files, these datasets are not included in this repository. Users can download them from the following sources.
 1. XJTU-SY Bearing Dataset
