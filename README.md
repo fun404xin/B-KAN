@@ -7,10 +7,14 @@ A virtual environment is recommended:
 
 python -m venv .venv
 Linux / macOS
+
 source .venv/bin/activate
 Windows
+
 .venv\Scripts\activate
 Then upgrade pip:
+python -m pip install --upgrade pip
+
 3. Install Dependencies
 Install the required Python packages using:
 pip install -r requirements.txt
