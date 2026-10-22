@@ -53,3 +53,29 @@ NASA Prognostics Data Repository: https://www.nasa.gov/intelligent-systems-divis
 Direct download (ZIP): https://phm-datasets.s3.amazonaws.com/NASA/10.+FEMTO+Bearing.zip
 
 Reference: Nectoux, P., Gouriveau, R., Medjaher, K., Ramasso, E., Morello, B., Zerhouni, N., & Varnier, C. (2012). PRONOSTIA: An Experimental Platform for Bearings Accelerated Life Test. Proceedings of the IEEE International Conference on Prognostics and Health Management (PHM).
+
+5.Quick Start
+
+After installing the dependencies and preparing the dataset, run:
+
+python train.py
+
+The default configuration uses:
+
+Epochs: 100
+Learning rate: 0.01
+Batch size: 32
+Random seed: 42
+Device: CUDA if available, otherwise CPU
+
+The script automatically selects:
+
+torch.device(
+    'cuda' if torch.cuda.is_available() else 'cpu'
+)
+
+6.Training B-KAN
+
+To train the proposed B-KAN model:
+
+python train.py --model b-kan
