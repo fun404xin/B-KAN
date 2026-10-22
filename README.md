@@ -1,5 +1,6 @@
 # B-KAN
 1. Environment
+
 1.1 Recommended Environment
 The code is implemented with Python and PyTorch.
 A virtual environment is recommended:
@@ -9,7 +10,7 @@ source .venv/bin/activate
 Windows
 .venv\Scripts\activate
 Then upgrade pip:
-2. Install Dependencies
+3. Install Dependencies
 Install the required Python packages using:
 pip install -r requirements.txt
 python -m pip install --upgrade pip
