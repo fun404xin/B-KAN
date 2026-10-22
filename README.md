@@ -20,7 +20,7 @@ Then upgrade pip:
 python -m pip install --upgrade pip
 
 2. Install Dependencies
-3. 
+
 Install the required Python packages using:
 
 pip install -r requirements.txt
