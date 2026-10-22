@@ -1,6 +1,7 @@
 # B-KAN
 1.Environment
 
+
 Recommended Environment
 The code is implemented with Python and PyTorch.
 A virtual environment is recommended:
@@ -21,6 +22,7 @@ python -m pip install --upgrade pip
 
 2.Install Dependencies
 
+
 Install the required Python packages using:
 
 pip install -r requirements.txt
@@ -29,11 +31,13 @@ python -m pip install --upgrade pip
 
 3.Install Dependencies
 
+
 Install the required Python packages using:
 
 pip install -r requirements.txt
 
 4.Dataset Availability
+
 
 The experiments in this study were conducted using the publicly available XJTU-SY and FEMTO-ST (PRONOSTIA / PHM 2012) bearing datasets. Due to the large size of the raw data files, these datasets are not included in this repository. Users can download them from the following sources.
 XJTU-SY Bearing Dataset
