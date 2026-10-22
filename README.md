@@ -1,9 +1,10 @@
 # B-KAN
 1. Environment
 
-1.1 Recommended Environment
+Recommended Environment
 The code is implemented with Python and PyTorch.
 A virtual environment is recommended:
+
 python -m venv .venv
 Linux / macOS
 source .venv/bin/activate
